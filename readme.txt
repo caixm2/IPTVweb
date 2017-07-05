@@ -1,2 +1,2 @@
-Git is a version control system.
-Git is free software.
+7/5 
+	把烽火下载部分完成，目前烽火这有三个数据是设定的，等之后数据库表更新好后再取值，界面显示与下载生成文件等都已经完成。

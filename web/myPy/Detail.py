@@ -133,7 +133,6 @@ class Detail:
 
                 if platformname == 'FH':
                     # 表数据还没，所以就暂时设置数据
-                    sumyonghu = 8000
                     sumhms = 1000
                     sumepg = 1000
                     sumll = 70000

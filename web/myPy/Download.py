@@ -44,10 +44,14 @@ class Download:
                        '机顶盒下载(Mbps)', '机顶盒下载(%)', '百事通回源(Mbps)', '百事通回源(%)', '测速(Mbps)', '测速(％)', '播播(Mbps)', '播播(%)',
                        '天翼视讯(Mbps)', '天翼视讯(%)', '教育中心(Mbps)', '教育中心(%)', '华数(Mbps)', '华数(%)', '嘉攸(Mbps)', '嘉攸(%)',
                        '嘉攸直播(Mbps)', '嘉攸直播(%)']
+        # 华为中兴周报标题
         titlewRpt = ['日期','流媒体并发(个)','epg并发(个)','流量数据(GBps)']
 
         # 烽火部分的周报标题
-        # titlefhwRpt = []
+        titlefhwRpt = ['日期', '流媒体并发(个)', 'epg并发(个)', '流量数据(GBps)',
+                       '芒果tv(Mbps)', '4K(Mbps)', '优酷(Mbps)','机顶盒下载(Mbps)',
+                       '百事通回源(Mbps)',  '测速(Mbps)', '播播(Mbps)','天翼视讯(Mbps)',
+                       '教育中心(Mbps)', '华数(Mbps)', '嘉攸(Mbps)','嘉攸直播(Mbps)']
 
         # 日报部分
         if day == 1:
@@ -210,7 +214,7 @@ class Download:
                 # 设置标题，取数据
                 if platformname == 'HW':
                     worksheet = workbook.add_worksheet('华为并发')
-                    worksheet.merge_range(0, 0, 0, 5, '华为并发月报', formathead)
+                    worksheet.merge_range(0, 0, 0, 5, '华为并发报表', formathead)
                     worksheet.write_row(1, 1, titlewRpt, formattitle)
                     worksheet.set_column(1, 2, 10)
                     worksheet.set_column(2, 4, 18)
@@ -270,7 +274,7 @@ class Download:
                 # 设置标题，取数据
                 elif platformname == 'zte':
                     worksheet = workbook.add_worksheet('中兴并发')
-                    worksheet.merge_range(0, 0, 0, 5, '中兴并发月报', formathead)
+                    worksheet.merge_range(0, 0, 0, 5, '中兴并发报表', formathead)
                     worksheet.write_row(1, 1, titlewRpt, formattitle)
                     worksheet.set_column(1, 2, 10)
                     worksheet.set_column(2, 4, 18)
@@ -327,8 +331,68 @@ class Download:
 
                     print('zhongxin file ok！')
 
-                # elif platformname == 'FH':
-                # 烽火部分暂时空着，等之后数据库等问题解决了再添加
+                elif platformname == 'FH':
+                    worksheet = workbook.add_worksheet('烽火并发')
+                    worksheet.merge_range(0, 0, 0, 15, '烽火并发报表', formathead)
+                    worksheet.write_row(1, 0, titlefhwRpt, formattitle)
+                    worksheet.set_column(0, 1, 10)
+                    worksheet.set_column(1, 15, 18)
+
+                    while startdate <= enddate:
+
+                        sumhms = 0
+                        sumepg = 0
+                        sumll = 0
+                        mangguoll = 0
+                        number_4kll = 0
+                        youkull = 0
+                        stbdown = 0
+                        bestvll = 0
+                        cesull = 0
+                        boboll = 0
+                        tianyill = 0
+                        jiaoyull = 0
+                        huasull = 0
+                        jiayoull = 0
+                        jylivell = 0
+
+                        tmp_dayDate = datetime.strptime(startdate, "%Y-%m-%d")
+                        tmp_dayDate = self.setAddDay(tmp_dayDate)
+                        checkdate = self.datetostr(tmp_dayDate)  # 比选择的开始日期多一天
+
+                        sumhms = 1000
+                        sumepg = 1000
+                        sumll = 70000
+
+                        sql = Tfhdayrpt.objects.filter(updatetime__icontains=checkdate).\
+                                values_list('mangguoll','number_4kll','youkull','stbdown','bestvll',
+                                'cesull','boboll','tianyill','jiaoyull','huasull','jiayoull','jylivell')
+                        for mangguo, number_4k, youku, stb, bestv, cesu, bobo, tianyi, jiayu, huasu, jiayou, jylive in sql.iterator():
+                            mangguoll = mangguoll + mangguo
+                            number_4kll = number_4kll + number_4k
+                            youkull = youkull + youku
+                            stbdown = stbdown + stb
+                            bestvll = bestvll + bestv
+                            cesull = cesull + cesu
+                            boboll = boboll + bobo
+                            tianyill = tianyill + tianyi
+                            jiaoyull = jiaoyull + jiayu
+                            huasull = huasull + huasu
+                            jiayoull = jiayoull + jiayou
+                            jylivell = jylivell + jylive
+                        tup = (int(sumhms), int(sumepg), int(sumll),int(mangguoll),
+                               int(number_4kll), int(youkull), int(stbdown), int(bestvll),
+                               int(cesull),int(boboll), int(tianyill), int(jiaoyull),
+                               int(huasull), int(jiayoull), int(jylivell))
+                        worksheet.write_string(row, 0, startdate[5:], formatcell)
+                        for x in range(0,len(tup)):
+                            if tup[x] <10000000:
+                                worksheet.write_number(row, x+1, tup[x], formatcell)
+                            else:
+                                worksheet.write_string(row, x+1, ' ', formatcell)
+                        row += 1
+                        startdate = checkdate
+
         return excelname
 
     def downloadFile(self,filename):
