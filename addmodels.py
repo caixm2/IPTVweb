@@ -1,3 +1,12 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from __future__ import unicode_literals
+
 from django.db import models
 
 
@@ -143,6 +152,44 @@ class Ipwl(models.Model):
         db_table = 'ipwl'
 
 
+class T3AUsr(models.Model):
+    adslname = models.CharField(max_length=20)
+    loginname = models.CharField(max_length=30)
+    ipaddr = models.CharField(max_length=50, blank=True, null=True)
+    logintime = models.CharField(max_length=20, blank=True, null=True)
+    status = models.CharField(max_length=5, blank=True, null=True)
+    platform = models.CharField(max_length=20, blank=True, null=True)
+    fj_name = models.CharField(max_length=50, blank=True, null=True)
+    quju = models.CharField(max_length=50, blank=True, null=True)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 't3a_usr'
+
+
+class TdicNetmask(models.Model):
+    netmaskstr = models.CharField(primary_key=True, max_length=20)
+    netmaskpoint = models.CharField(max_length=20, blank=True, null=True)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.CharField(max_length=3)
+
+    class Meta:
+        managed = False
+        db_table = 'tdic_netmask'
+
+
 class Tfhdayrpt(models.Model):
     id = models.BigAutoField(primary_key=True)
     quju = models.CharField(max_length=50)
@@ -164,8 +211,6 @@ class Tfhdayrpt(models.Model):
     number_4kper = models.FloatField(db_column='4Kper')  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
     youkull = models.FloatField()
     youkuper = models.FloatField()
-    stbdown = models.FloatField()
-    stbdownper = models.FloatField()
     bestvll = models.FloatField()
     bestvoper = models.FloatField()
     cesull = models.FloatField()
@@ -198,56 +243,6 @@ class Tfhdayrpt(models.Model):
     class Meta:
         managed = False
         db_table = 'tfhDayRpt'
-
-
-class Tfhmonrpt(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    quju = models.CharField(max_length=50)
-    avgwidth = models.FloatField()
-    qujusjjdll = models.FloatField()
-    jdllmax = models.FloatField()
-    jdllper = models.FloatField()
-    qujusjhmsbf = models.FloatField()
-    hmsbfmax = models.FloatField()
-    hmsbfper = models.FloatField()
-    qujusjdbkj = models.FloatField()
-    dbkjmax = models.FloatField()
-    dbkjper = models.FloatField()
-    mangguoll = models.FloatField()
-    mangguoper = models.FloatField()
-    number_4kll = models.FloatField(db_column='4Kll')  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
-    number_4kper = models.FloatField(db_column='4Kper')  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
-    youkull = models.FloatField()
-    youkuper = models.FloatField()
-    stbdown = models.FloatField()
-    stbdownper = models.FloatField()
-    bestvll = models.FloatField()
-    bestvoper = models.FloatField()
-    cesull = models.FloatField()
-    cesuper = models.FloatField()
-    boboll = models.FloatField()
-    boboper = models.FloatField()
-    tianyill = models.FloatField()
-    tianyiper = models.FloatField()
-    jiaoyull = models.FloatField()
-    jiaoyuper = models.FloatField()
-    huasull = models.FloatField()
-    huasuper = models.FloatField()
-    jiayoull = models.FloatField()
-    jiayouper = models.FloatField()
-    jylivell = models.FloatField()
-    jyliveper = models.FloatField()
-    createtime = models.DateTimeField()
-    updatetime = models.DateTimeField(blank=True, null=True)
-    deletetime = models.DateTimeField(blank=True, null=True)
-    createowner = models.CharField(max_length=30, blank=True, null=True)
-    updateowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteflag = models.CharField(max_length=3)
-
-    class Meta:
-        managed = False
-        db_table = 'tfhMonRpt'
 
 
 class Tfhdbspace(models.Model):
@@ -532,6 +527,32 @@ class Thwethtraffic(models.Model):
         db_table = 'thwethTraffic'
 
 
+class Thwiparea(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    number_3aipid = models.BigIntegerField(db_column='3aipid')  # Field renamed because it wasn't a valid Python identifier.
+    parentid = models.CharField(max_length=50, blank=True, null=True)
+    broadcast = models.CharField(max_length=50, blank=True, null=True)
+    ipstart = models.CharField(max_length=50)
+    ipend = models.CharField(max_length=50)
+    mask = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=50)
+    nodeid = models.CharField(max_length=50)
+    nodename = models.CharField(max_length=50)
+    areacode = models.CharField(max_length=50, blank=True, null=True)
+    epgprovider = models.CharField(max_length=50)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.CharField(max_length=3)
+
+    class Meta:
+        managed = False
+        db_table = 'thwiparea'
+
+
 class Thwsehji20170320(models.Model):
     podid = models.IntegerField()
     upid = models.IntegerField()
@@ -624,6 +645,14 @@ class Thwtongji(models.Model):
     class Meta:
         managed = False
         db_table = 'thwtongji'
+
+
+class TmpT3AUsrsInIppool(models.Model):
+    ipaddr = models.CharField(primary_key=True, max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'tmp_t3a_usrs_in_ippool'
 
 
 class TmpTfhdbspace(models.Model):
@@ -768,6 +797,17 @@ class TmpThwtongji(models.Model):
         db_table = 'tmp_thwtongji'
 
 
+class TmpTnocSplitIppool(models.Model):
+    ipstart = models.CharField(max_length=50)
+    ipend = models.CharField(max_length=50)
+    quju = models.CharField(max_length=50)
+    usrnum = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tmp_tnoc_split_ippool'
+
+
 class TmpTztedbkj(models.Model):
     seqnum = models.IntegerField(blank=True, null=True)
     starttime = models.DateTimeField()
@@ -847,6 +887,49 @@ class TmpTztehmsbf(models.Model):
     class Meta:
         managed = False
         db_table = 'tmp_tztehmsbf'
+
+
+class TnocUsrIppool(models.Model):
+    ipstart = models.CharField(primary_key=True, max_length=50)
+    ipend = models.CharField(max_length=50)
+    quju = models.CharField(max_length=50)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tnoc_usr_ippool'
+
+
+class Tusrsinippoolnum(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    nocipstart = models.CharField(max_length=50)
+    nocipend = models.CharField(max_length=50)
+    nocquju = models.CharField(max_length=50)
+    popipstart = models.CharField(max_length=50)
+    popipend = models.CharField(max_length=50)
+    popid = models.CharField(max_length=50)
+    popname = models.CharField(max_length=50)
+    usrnum = models.BigIntegerField()
+    platform = models.CharField(max_length=50)
+    ipfield = models.CharField(max_length=50)
+    daylen = models.CharField(max_length=50)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.CharField(max_length=3)
+
+    class Meta:
+        managed = False
+        db_table = 'tusrsinippoolnum'
 
 
 class Tztedayrpt(models.Model):
@@ -1046,6 +1129,26 @@ class Tztehmsbf(models.Model):
         db_table = 'tztehmsbf'
 
 
+class Tzteiparea(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    nodename = models.CharField(max_length=50)
+    nodeid = models.CharField(max_length=50)
+    ipstart = models.CharField(max_length=50)
+    ipend = models.CharField(max_length=50)
+    epgprovider = models.CharField(max_length=50)
+    createtime = models.DateTimeField()
+    updatetime = models.DateTimeField(blank=True, null=True)
+    deletetime = models.DateTimeField(blank=True, null=True)
+    createowner = models.CharField(max_length=30, blank=True, null=True)
+    updateowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteowner = models.CharField(max_length=30, blank=True, null=True)
+    deleteflag = models.CharField(max_length=3)
+
+    class Meta:
+        managed = False
+        db_table = 'tzteiparea'
+
+
 class Tztesheji(models.Model):
     nodename = models.CharField(max_length=50)
     wgname = models.CharField(max_length=50, blank=True, null=True)
@@ -1105,68 +1208,3 @@ class Tztesheji20170328(models.Model):
     class Meta:
         managed = False
         db_table = 'tztesheji20170328'
-
-class T3AUsr(models.Model):
-    adslname = models.CharField(max_length=20)
-    loginname = models.CharField(max_length=30)
-    ipaddr = models.CharField(max_length=50, blank=True, null=True)
-    logintime = models.CharField(max_length=20, blank=True, null=True)
-    status = models.CharField(max_length=5, blank=True, null=True)
-    platform = models.CharField(max_length=20, blank=True, null=True)
-    fj_name = models.CharField(max_length=50, blank=True, null=True)
-    quju = models.CharField(max_length=50, blank=True, null=True)
-    createtime = models.DateTimeField()
-    updatetime = models.DateTimeField(blank=True, null=True)
-    deletetime = models.DateTimeField(blank=True, null=True)
-    createowner = models.CharField(max_length=30, blank=True, null=True)
-    updateowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteflag = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 't3a_usr'
-
-class Thwiparea(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    number_3aipid = models.BigIntegerField(db_column='3aipid')  # Field renamed because it wasn't a valid Python identifier.
-    parentid = models.CharField(max_length=50, blank=True, null=True)
-    broadcast = models.CharField(max_length=50, blank=True, null=True)
-    ipstart = models.CharField(max_length=50)
-    ipend = models.CharField(max_length=50)
-    mask = models.CharField(max_length=50, blank=True, null=True)
-    status = models.CharField(max_length=50)
-    nodeid = models.CharField(max_length=50)
-    nodename = models.CharField(max_length=50)
-    areacode = models.CharField(max_length=50, blank=True, null=True)
-    epgprovider = models.CharField(max_length=50)
-    createtime = models.DateTimeField()
-    updatetime = models.DateTimeField(blank=True, null=True)
-    deletetime = models.DateTimeField(blank=True, null=True)
-    createowner = models.CharField(max_length=30, blank=True, null=True)
-    updateowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteflag = models.CharField(max_length=3)
-
-    class Meta:
-        managed = False
-        db_table = 'thwiparea'
-
-class Tzteiparea(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    nodename = models.CharField(max_length=50)
-    nodeid = models.CharField(max_length=50)
-    ipstart = models.CharField(max_length=50)
-    ipend = models.CharField(max_length=50)
-    epgprovider = models.CharField(max_length=50)
-    createtime = models.DateTimeField()
-    updatetime = models.DateTimeField(blank=True, null=True)
-    deletetime = models.DateTimeField(blank=True, null=True)
-    createowner = models.CharField(max_length=30, blank=True, null=True)
-    updateowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteowner = models.CharField(max_length=30, blank=True, null=True)
-    deleteflag = models.CharField(max_length=3)
-
-    class Meta:
-        managed = False
-        db_table = 'tzteiparea'
