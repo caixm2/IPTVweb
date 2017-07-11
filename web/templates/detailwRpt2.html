@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {#  烽火的周报显示界面，之后等周报部门算法完成后编辑  #}
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
-    <script src='/static/jquery/jquery.js'></script>
-    <script src='/static/jquery/highcharts.js'></script>
+    <script src="/static/jquery/jquery.js"></script>
+    <script src="/static/jquery/highcharts.js"></script>
     <title>周报查询结果</title>
     <style type="text/css">
         .div{position:absolute;margin-left: 20px;top:107px;font-size: 14px;}
@@ -36,20 +35,22 @@
 	 	obj_topic = document.getElementById("topic");
 	 	var tbl = document.getElementById("table");
 	 	var trs = tbl.getElementsByTagName("tr");
-        {#这个方法是判断单元格颜色#}
+
 	 	for (var i = 1; i < trs.length ; i++) {
-            var _tr = trs[i]
-            var tds = _tr.getElementsByTagName('td');
-{#             把中间哪部门数字做成整数型 #}
+            var tr = trs[i]
+            var tds = tr.getElementsByTagName("td");
+
+            {# 把中间哪部门数字做成整数型 #}
             for(var a = 1; a <= 10; a ++ ) {
-                var _td = tds[a];
-                var tdDiv = _td.getElementsByTagName('div');
+                var td = tds[a];
+                var tdDiv = td.getElementsByTagName("div");
                 if(tdDiv[0].innerHTML > 10000000)
-                    tdDiv[0].innerHTML = ''
+                    tdDiv[0].innerHTML = ""
                 else
                     tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
             }
 
+            {# 这个方法是判断单元格颜色 #}
 {#            for(var j = 4; j <= 13; j += 3) {#}
 {#                var _td = tds[j];#}
 {#                var tdDiv = _td.getElementsByTagName('div');#}
@@ -63,12 +64,12 @@
 	 }
 
 	 window.onscroll = function(){
-         {#因为google有个bug，不认可documentElement，所以要先判断兼容#}
+         {# 因为google有个bug，不认可documentElement，所以要先判断兼容 #}
          if (document.documentElement && document.documentElement.scrollTop)
              scroll_top = document.documentElement.scrollTop;
          else if (document.body)
              scroll_top = document.body.scrollTop;
-        {#这个方法是冻结表头#}
+        {# 这个方法是冻结表头 #}
          if(pre_scrollTop != (scroll_top)){
 	 		pre_scrollTop = (scroll_top);
 
@@ -89,13 +90,45 @@
     </p>
 
     <div id="topic" class="div">
-        <table cellpadding="0" cellspacing="0" border="1" style="width:1920px;font-size: 13px">
+        <table id="title" cellpadding="0" cellspacing="0" border="1" style="width:2000px;font-size: 13px">
             <thead>
-            <tr id="topic">
+                <tr>
+                    <th width="200">日期</th>
+                    <th>设计带宽(GBps)</th>
+                    <th>输出带宽(GBps)</th>
+                    <th>输出带宽占比%</th>
+                    <th>流媒体总并发(个)</th>
+                    <th>流媒体峰值并发(个)</th>
+                    <th>流媒体并发率%</th>
+
+                    <th>芒果tv(Mbps)</th>
+                    <th>4k(Mbps)</th>
+                    <th>优酷(Mbps)</th>
+                    <th>机顶盒下载(Mbps)</th>
+                    <th>百事通回源(Mbps)</th>
+                    <th>测速(Mbps)</th>
+                    <th>播播(Mbps)</th>
+                    <th>天翼视讯(Mbps)</th>
+                    <th>教育中心(Mbps)</th>
+                    <th>华数(Mbps)</th>
+                    <th>嘉攸(Mbps)</th>
+                    <th>嘉攸直播(Mbps)</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <table id="table" cellpadding="0" cellspacing="0" border="1" style="width:2000px;margin-left: 20px;font-size: 13px;">
+        <thead>
+            <tr>
                 <th width="200">日期</th>
-                <th>流媒体并发(个)</th>
-                <th>epg并发(个)</th>
-                <th>流量数据(GBps)</th>
+                <th>设计带宽(GBps)</th>
+                <th>输出带宽(GBps)</th>
+                <th>输出带宽占比%</th>
+                <th>流媒体总并发(个)</th>
+                <th>流媒体峰值并发(个)</th>
+                <th>流媒体并发率%</th>
+
                 <th>芒果tv(Mbps)</th>
                 <th>4k(Mbps)</th>
                 <th>优酷(Mbps)</th>
@@ -109,35 +142,11 @@
                 <th>嘉攸(Mbps)</th>
                 <th>嘉攸直播(Mbps)</th>
             </tr>
-            </thead>
-        </table>
-    </div>
-
-    <table id="table" cellpadding="0" cellspacing="0" border="1" style="width:1920px;margin-left: 20px;font-size: 13px;">
-        <thead>
-        <tr id="title">
-            <th width="200">日期</th>
-            <th>流媒体并发(个)</th>
-            <th>epg并发(个)</th>
-            <th>流量数据(GBps)</th>
-            <th>芒果tv(Mbps)</th>
-            <th>4k(Mbps)</th>
-            <th>优酷(Mbps)</th>
-            <th>机顶盒下载(Mbps)</th>
-            <th>百事通回源(Mbps)</th>
-            <th>测速(Mbps)</th>
-            <th>播播(Mbps)</th>
-            <th>天翼视讯(Mbps)</th>
-            <th>教育中心(Mbps)</th>
-            <th>华数(Mbps)</th>
-            <th>嘉攸(Mbps)</th>
-            <th>嘉攸直播(Mbps)</th>
-        </tr>
         </thead>
 
         <tbody>
         {% for x in form.data %}
-            <tr id="body" style="position: static;top: 100px;">
+            <tr style="position: static;top: 100px;">
                 {% for y in x %}
                     <td>
                         <div contenteditable="false">

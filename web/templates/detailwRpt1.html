@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
-    <script src='/static/jquery/jquery.js'></script>
-    <script src='/static/jquery/highcharts.js'></script>
+    <script src="/static/jquery/jquery.js"></script>
+    <script src="/static/jquery/highcharts.js"></script>
     <title>周报查询结果</title>
     <style type="text/css">
         .report{position: relative;top: 10%;left: 20px;width: 1400px;height: 80%;}
@@ -37,16 +37,16 @@
         var epg = [];
         var ll = [];
         window.onload = function() {
-            {#            获取表格数据，分成几个list方便做图表#}
+            {# 获取表格数据，分成几个list方便做图表 #}
             var tbl = document.getElementById("table");
             var trs = tbl.getElementsByTagName("tr");
 
             for (var i = 1; i < trs.length; i++) {
-                var _tr = trs[i]
-                var tds = _tr.getElementsByTagName('td');
+                var tr = trs[i]
+                var tds = tr.getElementsByTagName("td");
                 for (var j = 0; j < 4; j++) {
-                    var _td = tds[j];
-                    var tdDiv = _td.getElementsByTagName('div');
+                    var td = tds[j];
+                    var tdDiv = td.getElementsByTagName("div");
                     all.push(tdDiv[0].innerHTML)
                 }
             }
@@ -183,7 +183,7 @@
                 </thead>
                 <tbody>
                     {% for x in form.data %}
-                        <tr id="body" style="position: static;top: 100px;">
+                        <tr style="position: static;top: 100px;">
                             {% for y in x %}
                                 <td><div contenteditable="false">
                                     {{ y }}

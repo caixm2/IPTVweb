@@ -99,6 +99,7 @@ class Detail:
             date = tmp_date.strftime('%Y-%m-%d')   # 显示查询数据的时间，存到list1中用于在页面显示正确数据时间
 
             while (startday <= endday):
+
                 sumhms = 0
                 sumepg = 0
                 sumll = 0
@@ -132,10 +133,17 @@ class Detail:
                     tup = (str(date)[5:],int(sumhms),int(sumepg),int(sumll))
 
                 if platformname == 'FH':
-                    # 表数据还没，所以就暂时设置数据
-                    sumhms = 1000
-                    sumepg = 1000
-                    sumll = 70000
+                    p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname__icontains='南汇区域01').\
+                        values_list('sjjdll', 'peakjdll', 'jdllper',
+                                    'sjjdbf', 'peakjdbf', 'jdbfper')
+                    for sjjdll,peakjdll,jdllper,sjjdbf,peakjdbf,jdbfper in p.iterator():
+                        sjjdll = sjjdll
+                        sumll = peakjdll
+                        jdllper = jdllper
+                        sjjdbf = sjjdbf
+                        sumhms = peakjdbf
+                        jdbfper = jdbfper
+
                     # 获取烽火各部分流量数据：芒果，4k，优酷，机顶盒，百事通，测速，播播，天翼，教育中心，华数，嘉攸，嘉攸直播
                     p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).\
                         values_list('mangguoll','number_4kll','youkull','stbdown','bestvll',
@@ -154,10 +162,10 @@ class Detail:
                         jiayoull = jiayoull + jiayou
                         jylivell = jylivell + jylive
 
-                    tup = (str(date)[5:],int(sumhms),int(sumepg),int(sumll),
+                    tup = (str(date)[5:],int(sjjdll),int(sumll),int(jdllper),int(sjjdbf),int(sumhms),int(jdbfper),
                            int(mangguoll),int(number_4kll),int(youkull),int(stbdown),int(bestvll),int(cesull),
                            int(boboll),int(tianyill),int(jiaoyull),int(huasull),int(jiayoull),int(jylivell))
-                    # print(tup)
+                    print(tup)
 
                 list1.append(tup)
                 start = self.setAddDay(start)

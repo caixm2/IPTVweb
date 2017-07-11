@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-{# 烽火显示页面 #}
 	<meta charset="utf-8"/>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
@@ -9,18 +8,18 @@
 	<style type="text/css">
         .div{position:absolute;margin-left: 20px;top:107px;width:202px;ont-size: 14px;}
         .th{line-height: 25px;text-align:center;background-color: grey;width: 200px}
-        {#表格框主体数据宽高#}
+        {# 表格框主体数据宽高 #}
 	    td {
 {#		    width:100px;#}
 		    line-height: 25px;
 		    text-align:center;
 	    }
-        {#表格框左第一格数据宽高#}
+        {# 表格框左第一格数据宽高 #}
 	    td:first-child{
 		    text-align:center;
 		    background-color: grey;
 	    }
-        {#表格头数据宽高#}
+        {# 表格头数据宽高 #}
         th {
 		    line-height: 60px;
 		    text-align:center;
@@ -35,39 +34,51 @@
 	 window.onload = function(){
         pre_scrollLeft = (document.documentElement.scrollLeft);
 	 	obj_left = document.getElementById("topic");
-	 	var tbl = document.getElementById("table");
-	 	var trs = tbl.getElementsByTagName("tr");
-        {#这个方法是判断单元格颜色#}
+	 	var table = document.getElementById("table");
+	 	var left = document.getElementById('left');
+	 	var trs = table.getElementsByTagName("tr");
+
 	 	for (var i = 1; i < trs.length ; i++) {
-            var _tr = trs[i]
-            var tds = _tr.getElementsByTagName('td');
+            var tr = trs[i]
+            var tds = tr.getElementsByTagName("td");
+
+            {# 获取第一列节点数据,动态生成左侧表头 #}
+            var td = tds[0];
+            var tdDiv = td.getElementsByTagName("div");
+            var _tr = left.insertRow(i);
+            var _th = _tr.insertCell();
+            _th.innerHTML = tdDiv[0].innerHTML;
+            _th.className = 'th';
+
+            {# 这个方法是设置所有数值为整数 #}
             for(var j = 2; j < tds.length; j++) {
-                var _td = tds[j];
-                var tdDiv = _td.getElementsByTagName('div');
+                var td = tds[j];
+                var tdDiv = td.getElementsByTagName("div");
                 tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
             }
 
+            {# 这个方法是判断单元格颜色 #}
             for(var j = 5; j < 12; j += 3) {
-                var _td = tds[j];
-                var tdDiv = _td.getElementsByTagName('div');
+                var td = tds[j];
+                var tdDiv = td.getElementsByTagName("div");
                 tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
                 if (tdDiv[0].innerHTML >= 80)
-                    _td.style.backgroundColor = 'pink';
+                    td.style.backgroundColor = "pink";
                 else if (tdDiv[0].innerHTML < 20)
-                    _td.style.backgroundColor = 'yellow';
+                    td.style.backgroundColor = "yellow";
             }
         }
 	 }
 
 	 window.onscroll = function(){
 
-         {#因为google有个bug，不认可documentElement，所以要先判断兼容#}
+         {# 因为google有个bug，不认可documentElement，所以要先判断兼容 #}
          if (document.documentElement && document.documentElement.scrollLeft)
              scroll_left = document.documentElement.scrollLeft;
          else if (document.body)
              scroll_left = document.body.scrollLeft;
 
-        {#这个方法是冻结表左侧#}
+        {# 这个方法是冻结表左侧 #}
          if(pre_scrollLeft != (scroll_left)){
 	 		pre_scrollLeft = (scroll_left);
 	 		if(pre_scrollLeft > 20){
@@ -89,41 +100,11 @@
     </p>
 
     <div id="topic" class="div">
-        <table cellpadding="0" cellspacing="0" border="1">
+        <table id="left" cellpadding="0" cellspacing="0" border="1">
             <thead id="left">
-            <tr>
-                <th>节点名称</th>
-            </tr>
-            <tr>
-                <th class="th">南汇区域01</th>
-            </tr>
-            <tr>
-                <th class="th">南汇区域01边缘01</th>
-            </tr>
-            <tr>
-                <th class="th">南汇区域01边缘02</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域01</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域01边缘01</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域01边缘02</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域02</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域02边缘01</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域03</th>
-            </tr>
-            <tr>
-                <th class="th">高东区域03边缘01</th>
-            </tr>
+                <tr>
+                    <th>节点名称</th>
+                </tr>
             </thead>
         </table>
     </div>
