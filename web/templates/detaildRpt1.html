@@ -4,6 +4,7 @@
 	<meta charset="utf-8"/>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
+    <script src="/static/myJS/scroll.js"></script>
     <title>日报查询结果</title>
 	<style type="text/css">
         .div{position:absolute;margin-left: 20px;top:107px;font-size: 14px;}
@@ -24,68 +25,15 @@
 	    }
 
 	</style>
-	<script type="text/javascript">
-	 var pre_scrollTop = 0;  // 滚动条事件之前文档滚动高度
-	 var obj_topic ;
-	 var scroll_top;
-
-	 window.onload = function(){
-        pre_scrollTop = (document.documentElement.scrollTop);
-	 	obj_topic = document.getElementById("topic");
-	 	var table = document.getElementById("table");
-	 	var title = document.getElementById("title");
-	 	var trs = table.getElementsByTagName("tr");
-
-	 	for (var i = 1; i < trs.length ; i++) {
-            var tr = trs[i]
-            var tds = tr.getElementsByTagName("td");
-
-            {# 把中间哪部门数字做成整数型 #}
-            for(var a = 4; a <= 10; a ++ ) {
-                var td = tds[a];
-                var tdDiv = td.getElementsByTagName("div");
-                tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
-            }
-
-            {#这个方法是判断单元格颜色#}
-            for(var j = 4; j <= 13; j += 3) {
-                var td = tds[j];
-                var tdDiv = td.getElementsByTagName("div");
-                tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
-                if (tdDiv[0].innerHTML >= 90)
-                    td.style.backgroundColor = "pink";
-                else if (tdDiv[0].innerHTML < 20)
-                    td.style.backgroundColor = "yellow";
-            }
-        }
-	 }
-
-	 window.onscroll = function(){
-
-         {#因为google有个bug，不认可documentElement，所以要先判断兼容#}
-         if (document.documentElement && document.documentElement.scrollTop)
-             scroll_top = document.documentElement.scrollTop;
-         else if (document.body)
-             scroll_top = document.body.scrollTop;
-
-        {#这个方法是冻结表头#}
-         if(pre_scrollTop != (scroll_top)){
-	 		pre_scrollTop = (scroll_top);
-
-	 		if(pre_scrollTop > 107){
-                obj_topic.style.top = pre_scrollTop+"px";
-{#                alert(obj_topic.style.top)#}
-	 		}else {
-	 		    obj_topic.style.top = 107+"px";
-            }
-	 	}
-	 }
+    <script>
+        {# 数据设置整数:第一个参数是起始位置，第二个参数是终止位置，第三个参数是步长 #}
+        {# 列颜色设置:第四个参数是起始位置，第五个参数是终止位置，第六个参数是步长  #}
+        window.myfunction(4,10,1,4,13,3);
     </script>
-
 </head>
 
 <body>
-    <h2 style="margin-left: 20px">查询得到{{ info.date }}的数据</h2>
+    <h2 style="margin-left: 20px">查询得到{{ info.platformname }}平台{{ info.date }}的数据</h2>
 
     <p class="form-actions" style="position:relative;left: 20px;top: 10px">
         <a href="JavaScript:history.back(-1)"><input type="button" value="返回" class="btn btn-danger"></a>
@@ -93,7 +41,7 @@
     </p>
 
     <div id="topic" class="div">
-        <table id="title" cellpadding="0" cellspacing="0" border="1" style="width:1400px;font-size: 13px">
+        <table id="top_title" cellpadding="0" cellspacing="0" border="1" style="width:1400px;font-size: 13px">
             <thead>
                 <tr>
                     <th width="200">节点名称</th>

@@ -4,6 +4,7 @@
 	<meta charset="utf-8"/>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
+    <script src="/static/myJS/scroll.js"></script>
     <title>日报查询结果</title>
 	<style type="text/css">
         .div{position:absolute;margin-left: 20px;top:107px;width:202px;ont-size: 14px;}
@@ -27,81 +28,24 @@
 	    }
 
 	</style>
-	<script type="text/javascript">
-	 var pre_scrollLeft = 0;  // 滚动条事件之前文档滚动高度
-	 var obj_left ;
-	 var scroll_left;
-	 window.onload = function(){
-        pre_scrollLeft = (document.documentElement.scrollLeft);
-	 	obj_left = document.getElementById("topic");
-	 	var table = document.getElementById("table");
-	 	var left = document.getElementById('left');
-	 	var trs = table.getElementsByTagName("tr");
-
-	 	for (var i = 1; i < trs.length ; i++) {
-            var tr = trs[i]
-            var tds = tr.getElementsByTagName("td");
-
-            {# 获取第一列节点数据,动态生成左侧表头 #}
-            var td = tds[0];
-            var tdDiv = td.getElementsByTagName("div");
-            var _tr = left.insertRow(i);
-            var _th = _tr.insertCell();
-            _th.innerHTML = tdDiv[0].innerHTML;
-            _th.className = 'th';
-
-            {# 这个方法是设置所有数值为整数 #}
-            for(var j = 2; j < tds.length; j++) {
-                var td = tds[j];
-                var tdDiv = td.getElementsByTagName("div");
-                tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
-            }
-
-            {# 这个方法是判断单元格颜色 #}
-            for(var j = 5; j < 12; j += 3) {
-                var td = tds[j];
-                var tdDiv = td.getElementsByTagName("div");
-                tdDiv[0].innerHTML = parseInt(tdDiv[0].innerHTML)
-                if (tdDiv[0].innerHTML >= 80)
-                    td.style.backgroundColor = "pink";
-                else if (tdDiv[0].innerHTML < 20)
-                    td.style.backgroundColor = "yellow";
-            }
-        }
-	 }
-
-	 window.onscroll = function(){
-
-         {# 因为google有个bug，不认可documentElement，所以要先判断兼容 #}
-         if (document.documentElement && document.documentElement.scrollLeft)
-             scroll_left = document.documentElement.scrollLeft;
-         else if (document.body)
-             scroll_left = document.body.scrollLeft;
-
-        {# 这个方法是冻结表左侧 #}
-         if(pre_scrollLeft != (scroll_left)){
-	 		pre_scrollLeft = (scroll_left);
-	 		if(pre_scrollLeft > 20){
-                obj_left.style.left = pre_scrollLeft-20+"px";
-	 		}else {
-	 		    obj_left.style.left = 0+"px";
-            }
-	 	}
-	 }
+    <script>
+        {# 数据设置整数:第一个参数是起始位置，第二个参数是终止位置，第三个参数是步长 #}
+        {# 列颜色设置:第四个参数是起始位置，第五个参数是终止位置，第六个参数是步长  #}
+        window.myfunction(2,35,1,5,11,3);
     </script>
 </head>
 
 <body>
-    <h2 style="margin-left: 20px">查询得到{{ info.date }}的数据</h2>
+    <h2 style="margin-left: 20px">查询得到{{ info.platformname }}平台{{ info.date }}的数据</h2>
 
     <p class="form-actions" style="position:relative;left: 20px;top: 10px">
         <a href="JavaScript:history.back(-1)"><input type="button" value="返回" class="btn btn-danger"></a>
         <a href="../download?platformname={{ info.platformname }}&date={{ info.date }}&day={{ info.day }}"><input type="button" value="下载" class="btn btn-info"></a>
     </p>
 
-    <div id="topic" class="div">
-        <table id="left" cellpadding="0" cellspacing="0" border="1">
-            <thead id="left">
+    <div id="left" class="div">
+        <table id="left_title" cellpadding="0" cellspacing="0" border="1">
+            <thead>
                 <tr>
                     <th>节点名称</th>
                 </tr>
@@ -152,7 +96,7 @@
         </thead>
         <tbody>
             {% for x in form %}
-                <tr id="body" style="position: static;top: 100px;">
+                <tr style="position: static;top: 100px;">
                     {% for y in x %}
                         <td><div contenteditable="false">
                             {{ y }}

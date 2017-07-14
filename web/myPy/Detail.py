@@ -42,8 +42,8 @@ class Detail:
             return {'platformname':platformname,'wRptstartdate':wRptstartdate,'wRptenddate':wRptenddate,'day':day}
 
     def checkOut(self):
-        list1 = []      #存放获取的数据
-
+        #存放获取的数据
+        list1 = []
         # 获取平台名称，如果有‘dRptdate_year’说明是日报查询
         platformname = self.form.data['platformname']
         if 'dRptdate_year' in self.form.data.keys():
@@ -59,7 +59,6 @@ class Detail:
                             'sjepgbf', 'peakepgbf', 'epgbfper',
                             'sjhmsbf', 'peakhmsbf', 'hmsbfper',
                             'sjdbkj', 'peakdbkj', 'dbkjper')
-                return p
 
             elif platformname == 'zte':
                 return Tztedayrpt.objects.filter(updatetime__contains=day).\
@@ -131,9 +130,9 @@ class Detail:
                         sumepg = sumepg + peakepgbf
                         sumll = sumll + peakjdll
                     tup = (str(date)[5:],int(sumhms),int(sumepg),int(sumll))
-
                 if platformname == 'FH':
-                    p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname__icontains='南汇区域01').\
+                    # p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname__icontains='烽火汇总').\
+                    p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname='南汇区域01').\
                         values_list('sjjdll', 'peakjdll', 'jdllper',
                                     'sjjdbf', 'peakjdbf', 'jdbfper')
                     for sjjdll,peakjdll,jdllper,sjjdbf,peakjdbf,jdbfper in p.iterator():
