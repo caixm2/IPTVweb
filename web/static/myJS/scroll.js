@@ -1,6 +1,8 @@
 /**
  * Created by ChenQi on 2017/7/14.
  */
+// 数据设置整数:第一个参数是起始位置，第二个参数是终止位置，第三个参数是步长
+// 列颜色设置:第四个参数是起始位置，第五个参数是终止位置，第六个参数是步长
 function myfunction(var1,var2,var3,var4,var5,var6) {
     var pre_scrollTop = 0;  // 滚动条事件之前文档滚动高度
     var pre_scrollLeft = 0;

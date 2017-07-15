@@ -421,7 +421,6 @@ class Download:
         response['Content-Encoding'] = 'utf-8'
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="%s"' % (urlquote_plus(the_file_name))
-
         return response
 
 
