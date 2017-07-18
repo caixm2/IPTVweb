@@ -80,7 +80,6 @@ class Detail:
                          'tianyill','tianyiper','jiaoyull','jiaoyuper',
                          'huasull','huasuper','jiayoull','jiayouper','jylivell','jyliveper')
 
-        # 如果有‘wRptstartdate_year’说明是月报查询，目前暂时将烽火这部分注释，之后会上线
         if 'wRptstartdate_year' in self.form.data.keys():
             checkDate = self.checkDate()                            # 调用本类的另一个方法
             tmp_startdate = datetime.strptime(checkDate['wRptstartdate'], "%Y-%m-%d")
@@ -99,21 +98,23 @@ class Detail:
 
             while (startday <= endday):
 
-                sumhms = 0
-                sumepg = 0
-                sumll = 0
-                mangguoll = 0
-                number_4kll = 0
-                youkull = 0
-                stbdown = 0
-                bestvll = 0
-                cesull = 0
-                boboll = 0
-                tianyill = 0
-                jiaoyull = 0
-                huasull = 0
-                jiayoull = 0
-                jylivell = 0
+                sumhms = sumepg = sumll = mangguoll = number_4kll = youkull = stbdown = bestvll = 0
+                cesull = boboll = tianyill = jiaoyull = huasull = jiayoull = jylivell = 0
+                # sumhms = 0
+                # sumepg = 0
+                # sumll = 0
+                # mangguoll = 0
+                # number_4kll = 0
+                # youkull = 0
+                # stbdown = 0
+                # bestvll = 0
+                # cesull = 0
+                # boboll = 0
+                # tianyill = 0
+                # jiaoyull = 0
+                # huasull = 0
+                # jiayoull = 0
+                # jylivell = 0
 
                 if platformname == 'HW':
                     p = Thwdayrpt.objects.filter(updatetime__icontains=startday).values_list('peakhmsbf','peakepgbf','peakjdll')
@@ -131,17 +132,20 @@ class Detail:
                         sumll = sumll + peakjdll
                     tup = (str(date)[5:],int(sumhms),int(sumepg),int(sumll))
                 if platformname == 'FH':
-                    # p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname__icontains='烽火汇总').\
-                    p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname='南汇区域01').\
+                    # p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname='南汇区域01').\
+                    p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).filter(nodecname__icontains='烽火汇总').\
                         values_list('sjjdll', 'peakjdll', 'jdllper',
                                     'sjjdbf', 'peakjdbf', 'jdbfper')
-                    for sjjdll,peakjdll,jdllper,sjjdbf,peakjdbf,jdbfper in p.iterator():
-                        sjjdll = sjjdll
-                        sumll = peakjdll
-                        jdllper = jdllper
-                        sjjdbf = sjjdbf
-                        sumhms = peakjdbf
-                        jdbfper = jdbfper
+                    if p :
+                        for sjjdll,peakjdll,jdllper,sjjdbf,peakjdbf,jdbfper in p.iterator():
+                            sjjdll = sjjdll
+                            sumll = peakjdll
+                            jdllper = jdllper
+                            sjjdbf = sjjdbf
+                            sumhms = peakjdbf
+                            jdbfper = jdbfper
+                    else:
+                        sjjdll = sumll = jdllper = sjjdbf = sumhms = jdbfper = 0
 
                     # 获取烽火各部分流量数据：芒果，4k，优酷，机顶盒，百事通，测速，播播，天翼，教育中心，华数，嘉攸，嘉攸直播
                     p = Tfhdayrpt.objects.filter(updatetime__icontains=startday).\

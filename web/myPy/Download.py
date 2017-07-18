@@ -46,7 +46,6 @@ class Download:
                        '嘉攸直播(Mbps)', '嘉攸直播(%)']
         # 华为中兴周报标题
         titlewRpt = ['日期','流媒体并发(个)','epg并发(个)','流量数据(GBps)']
-
         # 烽火部分的周报标题
         titlefhwRpt = ['日期', '设计带宽(GBps)','输出带宽(GBps)','输出带宽占比%','流媒体总并发(个)',
                         '流媒体峰值并发(个)','流媒体并发率%','芒果tv(Mbps)', '4K(Mbps)', '优酷(Mbps)',
@@ -173,7 +172,6 @@ class Download:
                 workbook.close()
                 print(excelname)
 
-
         # 周报部分
         elif day > 1:
 
@@ -198,18 +196,22 @@ class Download:
             else:
                 workbook = xlsxwriter.Workbook(excelname)
                 # 一些表格的设置
-                formattitle = workbook.add_format()
-                formattitle.set_bold(2)
-                formattitle.set_align('center')
-                formattitle.set_align('vcenter')
                 formathead = workbook.add_format()
                 formathead.set_bold(3)
                 formathead.set_align('center')
-                formattitle.set_align('vcenter')
+                formathead.set_align('vcenter')
                 formathead.set_font_size(20)
-                formatcell = workbook.add_format()
-                formatcell.set_align('center')
+
+                formattitle = workbook.add_format()
+                formattitle.set_border(1)
+                formattitle.set_bold(2)
+                formattitle.set_align('center')
                 formattitle.set_align('vcenter')
+                
+                formatcell = workbook.add_format()
+                formatcell.set_border(1)
+                formatcell.set_align('center')
+                formatcell.set_align('vcenter')
 
                 # 设置标题，取数据
                 if platformname == 'HW':
@@ -333,44 +335,34 @@ class Download:
 
                 elif platformname == 'FH':
                     worksheet = workbook.add_worksheet('烽火并发')
-                    worksheet.merge_range(0, 0, 0, 19, '烽火并发报表', formathead)
+                    worksheet.merge_range(0, 0, 0, 18, '烽火并发报表', formathead)
                     worksheet.write_row(1, 0, titlefhwRpt, formattitle)
                     worksheet.set_column(0, 1, 10)
-                    worksheet.set_column(1, 19, 18)
+                    worksheet.set_column(1, 18, 18)
 
                     while startdate <= enddate:
 
-                        sumhms = 0
-                        sumepg = 0
-                        sumll = 0
-                        mangguoll = 0
-                        number_4kll = 0
-                        youkull = 0
-                        stbdown = 0
-                        bestvll = 0
-                        cesull = 0
-                        boboll = 0
-                        tianyill = 0
-                        jiaoyull = 0
-                        huasull = 0
-                        jiayoull = 0
-                        jylivell = 0
+                        sumhms = sumll =  mangguoll = number_4kll = youkull = stbdown = bestvll = 0
+                        cesull = boboll = tianyill = jiaoyull = huasull = jiayoull = jylivell = 0
 
                         tmp_dayDate = datetime.strptime(startdate, "%Y-%m-%d")
                         tmp_dayDate = self.setAddDay(tmp_dayDate)
                         checkdate = self.datetostr(tmp_dayDate)  # 比选择的开始日期多一天
 
-                        # p = Tfhdayrpt.objects.filter(updatetime__icontains=checkdate).filter(nodecname__icontains='烽火汇总').\
-                        p = Tfhdayrpt.objects.filter(updatetime__icontains=checkdate).filter(nodecname='南汇区域01'). \
+                        p = Tfhdayrpt.objects.filter(updatetime__icontains=checkdate).filter(
+                            nodecname__icontains='烽火汇总'). \
                             values_list('sjjdll', 'peakjdll', 'jdllper',
                                         'sjjdbf', 'peakjdbf', 'jdbfper')
-                        for sjjdll, peakjdll, jdllper, sjjdbf, peakjdbf, jdbfper in p.iterator():
-                            sjjdll = sjjdll
-                            sumll = peakjdll
-                            jdllper = jdllper
-                            sjjdbf = sjjdbf
-                            sumhms = peakjdbf
-                            jdbfper = jdbfper
+                        if p:
+                            for sjjdll, peakjdll, jdllper, sjjdbf, peakjdbf, jdbfper in p.iterator():
+                                sjjdll = sjjdll
+                                sumll = peakjdll
+                                jdllper = jdllper
+                                sjjdbf = sjjdbf
+                                sumhms = peakjdbf
+                                jdbfper = jdbfper
+                        else:
+                            sjjdll = sumll = jdllper = sjjdbf = sumhms = jdbfper = 0
 
                         sql = Tfhdayrpt.objects.filter(updatetime__icontains=checkdate).\
                                 values_list('mangguoll','number_4kll','youkull','stbdown','bestvll',
@@ -389,24 +381,40 @@ class Download:
                             jiayoull = jiayoull + jiayou
                             jylivell = jylivell + jylive
 
-                        tup = (str(date)[5:], int(sjjdll), int(sumll), int(jdllper), int(sjjdbf), int(sumhms), int(jdbfper),
+                        tup = (int(sjjdll), int(sumll), int(jdllper), int(sjjdbf), int(sumhms), int(jdbfper),
                             int(mangguoll), int(number_4kll), int(youkull), int(stbdown), int(bestvll), int(cesull),
                             int(boboll), int(tianyill), int(jiaoyull), int(huasull), int(jiayoull), int(jylivell))
+
                         worksheet.write_string(row, 0, startdate[5:], formatcell)
 
                         for x in range(0,len(tup)):
                             if tup[x] < 10000000:
-                                worksheet.write_number(row, x+1, tup[x], formatcell)
+                                if (x+1 == 3 or x+1 == 6 ) and tup[x] >= 90:
+                                    # 百分比超过90显示红色
+                                    worksheet.write_number(row, x+1, tup[x], workbook.add_format(
+                                        {'fg_color': '#FFC7CE', 'border': 1, 'align': 'center'}))
+                                elif (x+1 == 3 or x+1 == 6 ) and tup[x] <= 20:
+                                    # 百分比低于20显示黄色
+                                    worksheet.write_number(row, x+1, tup[x], workbook.add_format(
+                                        {'fg_color': '#FFD700', 'border': 1, 'align': 'center'}))
+                                else:
+                                    worksheet.write_number(row, x+1, tup[x], formatcell)
                             else:
                                 worksheet.write_string(row, x+1, ' ', formatcell)
                         row += 1
                         startdate = checkdate
-
+                    worksheet.freeze_panes('B3')
+                workbook.close()
+        print(excelname)
         return excelname
 
     def downloadFile(self,filename):
-        name = filename.split('/')                # 分割路径，得到文件名称
+        if '\\' in filename:
+            name = filename.split('\\')                # 分割路径，得到文件名称，window和linux不同，就用两种分割
+        elif '/' in filename:
+            name = filename.split('/')
         the_file_name = name[len(name) - 1]       # 显示在弹出对话框中的默认的下载文件名
+        print(the_file_name)
         def readFile(filename, chunk_size=512):
             with open(filename, 'rb') as f:
                 while True:
